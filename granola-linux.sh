@@ -72,6 +72,10 @@ else
   info "using cached $(basename "$ZIP")"
 fi
 
+curl -fsSL "https://github.com/electron/electron/releases/download/v$EL_VER/SHASUMS256.txt" \
+  | grep " \*\?electron-v$EL_VER-linux-x64.zip$" \
+  | (cd "$CACHE_DIR" && sha256sum -c -) || die "Electron checksum mismatch"
+
 rm -rf "$INSTALL_DIR"
 mkdir -p "$INSTALL_DIR"
 "$SEVENZZ" x "$ZIP" -o"$INSTALL_DIR" -y >/dev/null
